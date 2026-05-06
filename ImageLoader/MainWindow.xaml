@@ -1,0 +1,50 @@
+﻿<Window x:Class="ImageLoader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageLoader"
+        xmlns:elements="clr-namespace:ImageLoader.Elements"
+        xmlns:services="clr-namespace:ImageLoader.Services" 
+        xmlns:viewmodels="clr-namespace:ImageLoader.Elements.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+        mc:Ignorable="d"
+        Title="ImageLoader" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <services:TotalProgressHandleService x:Key="progressService"
+                                                 HandlersCount="3"
+                                                 TotalProgressChanged="OnTotalProgressChanged"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <elements:UrlImageViewer ProgressHandler="{Binding Source={StaticResource progressService}, Path=ProgressHandler}"
+                                     Resolver="{Binding UrlImageViewerResolver, Mode=TwoWay}"
+                                     Url="https://i.pinimg.com/736x/8d/57/59/8d5759cc1a5914884e7566bcc7f139ca.jpg"/>
+            <elements:UrlImageViewer Grid.Column="1"
+                                     ProgressHandler="{Binding Source={StaticResource progressService}, Path=ProgressHandler}"
+                                     Resolver="{Binding UrlImageViewerResolver, Mode=OneTime}"
+                                     Url="https://i.pinimg.com/736x/30/03/55/300355f49106ebcd72f41e8759ed3268.jpg"/>
+            <elements:UrlImageViewer Grid.Column="2"
+                                     ProgressHandler="{Binding Source={StaticResource progressService}, Path=ProgressHandler}"
+                                     Resolver="{Binding UrlImageViewerResolver, Mode=OneTime}"
+                                     Url="https://i.pinimg.com/1200x/14/96/f2/1496f27970b3b4465b4c4101e6901c9c.jpg"/>
+        </Grid>
+        <Button Grid.Row="1" Content="Load all" 
+                VerticalAlignment="Center" Margin="4"
+                Command="{Binding LoadAllCommand}"/>
+        <ProgressBar Grid.Row="2" Height="20"
+                     Value="{Binding TotalProgress}"/>
+    </Grid>
+</Window>
